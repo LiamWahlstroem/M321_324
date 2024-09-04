@@ -1,19 +1,19 @@
-name: Subtraction Pipeline
+name: Subtract Pipeline
 
 env:
-  IMAGE_NAME: subtraction
+  IMAGE_NAME: subtract
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'subtraction/**'
+      - 'subtract/**'
   pull_request:
     branches:
       - main
     paths:
-      - 'subtraction/**'
+      - 'subtract/**'
 
 jobs:
   build:
