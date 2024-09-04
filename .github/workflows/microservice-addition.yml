@@ -35,4 +35,4 @@ jobs:
         with:
           context: ./addition
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
+          tags: ghcr.io/liamwahlstroem/${{ env.IMAGE_NAME }}:latest
