@@ -1,4 +1,4 @@
-name: addition pipeline
+name: Addition Pipeline
 
 env:
   IMAGE_NAME: addition
@@ -18,20 +18,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: checkout code
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
                 
-      - name: Build image
-        uses: docker/build-push-action@v2
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v5
         with:
-          context: ./addition/.
+          context: ./addition
           push: true
-          tags: ghcr.io/liamwahlstroem/${{ env.IMAGE_NAME }}:latest
+          tags: ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
