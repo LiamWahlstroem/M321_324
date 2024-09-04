@@ -3,11 +3,11 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-app = FastAPI()
-
 class AdditionInput(BaseModel):
     num1: int
     num2: int
+
+app = FastAPI()
 
 @app.post("/addition")
 async def addition(input_data: AdditionInput):
