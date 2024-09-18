@@ -1,3 +1,8 @@
-aio-pika
-bcrypt
-tinydb
+aio-pika==9.4.3
+aiormq==6.8.1
+bcrypt==4.2.0
+idna==3.10
+multidict==6.1.0
+pamqp==3.3.0
+tinydb==4.8.0
+yarl==1.11.1

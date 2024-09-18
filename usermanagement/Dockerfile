@@ -5,8 +5,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN pip install --no-cache-dir aio-pika bcrypt tinydb
-
-EXPOSE 5000
+RUN pip install --no-cache-dir -r requirements.txt
 
 CMD python3 user_management_service.py
