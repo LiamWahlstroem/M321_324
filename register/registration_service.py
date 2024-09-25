@@ -12,7 +12,7 @@ class RegisterUser(BaseModel):
 
 async def send_registration_request(user: RegisterUser):
     correlation_id = str(uuid.uuid4())
-    connection = await connect_robust("amqp://guest:guest@localhost/")
+    connection = await connect_robust("amqp://test:test@messagequeue:5672/")
     channel = await connection.channel()
 
     response_queue = await channel.declare_queue(exclusive=True)
