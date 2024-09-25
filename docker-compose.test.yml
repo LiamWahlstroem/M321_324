@@ -2,7 +2,7 @@ services:
   proxy:
   messageQueue:
     image: ghcr.io/liamwahlstroem/queue:latest
-    container_name: messageQueue
+    container_name: messagequeue
     restart: always
     ports: 
       - 5672:5672
@@ -21,6 +21,8 @@ services:
     restart: always
     ports: 
       - 5000:5000
+    expose:
+      - 5000
     requires:
       - messageQueue
       - userService
@@ -30,6 +32,8 @@ services:
     restart: always
     ports: 
       - 5000:5000
+    expose:
+      - 5000
     requires:
       - messageQueue
       - userService
@@ -39,6 +43,8 @@ services:
     restart: always
     ports: 
       - 5000:5000
+    expose:
+      - 5000
     volumes:
       - /etc/db/addition/:/etc/db/
     requires:
@@ -50,6 +56,8 @@ services:
     restart: always
     ports: 
       - 5000:5000
+    expose:
+      - 5000
     volumes:
       - /etc/db/subtract/:/etc/db/
     requires:
@@ -61,6 +69,8 @@ services:
     restart: always
     ports: 
       - 5000:5000
+    expose:
+      - 5000
     volumes: 
       - /etc/db/division/:/etc/db/
     requires:
@@ -72,6 +82,8 @@ services:
     restart: always
     ports: 
       - 5000:5000
+    expose:
+      - 5000
     volumes:
       - /etc/db/multiplication/:/etc/db/
     requires:

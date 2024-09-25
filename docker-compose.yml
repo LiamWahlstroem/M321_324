@@ -11,7 +11,7 @@ services:
       - 443
   messageQueue:
     image: ghcr.io/liamwahlstroem/queue:latest
-    container_name: messageQueue
+    container_name: messagequeue
     restart: always
     ports: 
       - 5672:5672

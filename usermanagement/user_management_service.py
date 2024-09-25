@@ -1,10 +1,43 @@
+import os
 from tinydb import TinyDB, Query
 import bcrypt
 import asyncio
 from aio_pika import connect_robust, IncomingMessage
+import jwt
 
-db = TinyDB('db.json')
+db = TinyDB('/etc/db/db.json')
 User = Query()
+
+if os.getenv("ENV") == "test":
+    SECRET_KEY = 'testSecret'
+else:
+    SECRET_KEY = os.getenv("SECRET")
+
+def createJWT(username):
+    payload = {
+        'username': username
+    }
+    
+    return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+
+def verifyJWT(jwt):
+    try:
+        decoded_payload = jwt.decode(jwt, SECRET_KEY, algorithms='HS256')
+
+        if 'username' in decoded_payload and decoded_payload['username']:
+            username = decoded_payload['username']
+
+            db_user = db.search(User.username == username)
+
+            if not db_user:
+                return False
+            else:
+                return True
+
+        else:
+            return False
+    except jwt.InvalidTokenError:
+        return False
 
 async def handle_registration(message: IncomingMessage):
     async with message.process():
@@ -31,7 +64,7 @@ async def handle_login(message: IncomingMessage):
 
         db_user = db_user[0]
         if bcrypt.checkpw(password.encode('utf-8'), db_user['password']):
-            await message.reply(b"Login successful")
+            await message.reply(createJWT(username))
         else:
             await message.reply(b"Invalid password")
 
