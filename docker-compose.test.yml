@@ -12,8 +12,8 @@ services:
     container_name: userService
     restart: always
     volumes:
-      - /test_data/user_data.json:/etc/db/user_data.json
-    requires:
+      - /test/testdata.json:/etc/db/db.json
+    depends_on:
       - messageQueue
   login:
     image: ghcr.io/liamwahlstroem/login:latest
@@ -23,7 +23,7 @@ services:
       - 5000:5000
     expose:
       - 5000
-    requires:
+    depends_on:
       - messageQueue
       - userService
   register:
@@ -34,7 +34,7 @@ services:
       - 5000:5000
     expose:
       - 5000
-    requires:
+    depends_on:
       - messageQueue
       - userService
   addition:
@@ -47,7 +47,7 @@ services:
       - 5000
     volumes:
       - /etc/db/addition/:/etc/db/
-    requires:
+    depends_on:
       - messageQueue
       - userService
   subtract:
@@ -60,7 +60,7 @@ services:
       - 5000
     volumes:
       - /etc/db/subtract/:/etc/db/
-    requires:
+    depends_on:
       - messageQueue
       - userService
   division:
@@ -73,7 +73,7 @@ services:
       - 5000
     volumes: 
       - /etc/db/division/:/etc/db/
-    requires:
+    depends_on:
       - messageQueue
       - userService
   multiplication:
@@ -86,6 +86,6 @@ services:
       - 5000
     volumes:
       - /etc/db/multiplication/:/etc/db/
-    requires:
+    depends_on:
       - messageQueue
       - userService

@@ -22,7 +22,7 @@ services:
     restart: always
     volumes:
       - test
-    requires:
+    depends_on:
       - messageQueue
       - proxy
   addition:
@@ -33,7 +33,7 @@ services:
       - 5000:5000
     volumes:
       - test
-    requires:
+    depends_on:
       - messageQueue
       - proxy
       - userService
@@ -45,7 +45,7 @@ services:
       - 5000:5000
     volumes:
       - test
-    requires:
+    depends_on:
       - messageQueue
       - proxy
       - userService
@@ -57,7 +57,7 @@ services:
       - 5000:5000
     volumes:
       - test
-    requires:
+    depends_on:
       - messageQueue
       - proxy
       - userService
@@ -69,7 +69,7 @@ services:
       - 5000:5000
     volumes:
       - test
-    requires:
+    depends_on:
       - messageQueue
       - proxy
       - userService

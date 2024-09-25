@@ -5,13 +5,14 @@ import asyncio
 from aio_pika import connect_robust, IncomingMessage
 import jwt
 
-db = TinyDB('/etc/db/db.json')
 User = Query()
 
 if os.getenv("ENV") == "test":
     SECRET_KEY = 'testSecret'
+    db = TinyDB('./db.json')
 else:
     SECRET_KEY = os.getenv("SECRET")
+    db = TinyDB('/etc/db/db.json')
 
 def createJWT(username):
     payload = {
