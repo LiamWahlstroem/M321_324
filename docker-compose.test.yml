@@ -4,7 +4,7 @@ services:
     image: ghcr.io/liamwahlstroem/queue:latest
     container_name: messagequeue
     restart: always
-    ports: 
+    ports:
       - 5672:5672
       - 15672:15672
   userService:
@@ -15,11 +15,21 @@ services:
       - /test/testdata.json:/etc/db/db.json
     depends_on:
       - messageQueue
+  testUserService:
+    build:
+      context: ./usermanagement
+    container_name: userService
+    restart: always
+    volumes:
+      - /test/testdata.json:/etc/db/db.json
+    depends_on:
+      - messageQueue
   login:
-    image: ghcr.io/liamwahlstroem/login:latest
+    build:
+      context: ./login
     container_name: login
     restart: always
-    ports: 
+    ports:
       - 5000:5000
     expose:
       - 5000
@@ -27,10 +37,11 @@ services:
       - messageQueue
       - userService
   register:
-    image: ghcr.io/liamwahlstroem/register:latest
+    build:
+      context: ./register    
     container_name: register
     restart: always
-    ports: 
+    ports:
       - 5000:5000
     expose:
       - 5000
@@ -38,10 +49,11 @@ services:
       - messageQueue
       - userService
   addition:
-    image: ghcr.io/liamwahlstroem/addition:latest
+    build:
+      context: ./addition    
     container_name: addition
     restart: always
-    ports: 
+    ports:
       - 5000:5000
     expose:
       - 5000
@@ -51,7 +63,8 @@ services:
       - messageQueue
       - userService
   subtract:
-    image: ghcr.io/liamwahlstroem/subtract:latest
+    build:
+      context: ./subtract
     container_name: subtract
     restart: always
     ports: 
@@ -64,23 +77,25 @@ services:
       - messageQueue
       - userService
   division:
-    image: ghcr.io/liamwahlstroem/division:latest
+    build:
+      context: ./division
     container_name: division
     restart: always
     ports: 
       - 5000:5000
     expose:
       - 5000
-    volumes: 
+    volumes:
       - /etc/db/division/:/etc/db/
     depends_on:
       - messageQueue
       - userService
   multiplication:
-    image: ghcr.io/liamwahlstroem/multiplication:latest
+    build:
+      context: ./multiplication
     container_name: multiplication
     restart: always
-    ports: 
+    ports:
       - 5000:5000
     expose:
       - 5000

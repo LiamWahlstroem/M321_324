@@ -11,7 +11,7 @@ class LoginUser(BaseModel):
 
 async def send_login_request(user: LoginUser):
     correlation_id = str(uuid.uuid4())
-    connection = await connect_robust("amqp://guest:guest@localhost/")
+    connection = await connect_robust("amqp://test:test@messagequeue:5672/")
     channel = await connection.channel()
 
     response_queue = await channel.declare_queue(exclusive=True)
@@ -33,9 +33,7 @@ async def send_login_request(user: LoginUser):
 async def login_user(user: LoginUser):
     response = await send_login_request(user)
 
-    if response == "User not found":
-        raise HTTPException(status_code=404, detail="User not found")
-    elif response == "Invalid password":
-        raise HTTPException(status_code=400, detail="Invalid password")
+    if response == "User not found" or response == "Invalid password":
+        raise HTTPException(status_code=400, detail="User already exists or wrong password")
 
     return {"message": response}

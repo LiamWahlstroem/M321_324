@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Message queue service (RabbitMQ)
   messagequeue:
@@ -19,6 +17,24 @@ services:
     networks:
       - app-network
 
+  # User management service
+  usermanagement:
+    build: ./usermanagement
+    ports:
+      - "8002:5000"
+    environment:
+      - RABBITMQ_HOST=messagequeue
+      - RABBITMQ_DEFAULT_USER=test
+      - RABBITMQ_DEFAULT_PASS=test
+      - ENV=test
+    depends_on:
+      - messagequeue
+    volumes:
+      - ./usermanagement/db.json:/etc/db/db.json
+    restart: unless-stopped
+    networks:
+      - app-network
+
   # Login service
   login:
     build: ./login
@@ -28,6 +44,7 @@ services:
       - RABBITMQ_HOST=messagequeue
       - RABBITMQ_DEFAULT_USER=test
       - RABBITMQ_DEFAULT_PASS=test
+      - ENV=test
     depends_on:
       - messagequeue
     restart: unless-stopped
@@ -43,21 +60,22 @@ services:
       - RABBITMQ_HOST=messagequeue
       - RABBITMQ_DEFAULT_USER=test
       - RABBITMQ_DEFAULT_PASS=test
+      - ENV=test
     depends_on:
       - messagequeue
     restart: unless-stopped
     networks:
       - app-network
 
-  # User management service
-  usermanagement:
-    build: ./usermanagement
+  addition: 
+    build: ./addition
     ports:
-      - "8002:5000"
+      - "8003:5000"
     environment:
       - RABBITMQ_HOST=messagequeue
       - RABBITMQ_DEFAULT_USER=test
       - RABBITMQ_DEFAULT_PASS=test
+      - ENV=test
     depends_on:
       - messagequeue
     restart: unless-stopped
@@ -65,7 +83,7 @@ services:
       - app-network
 
 volumes:
-  rabbitmq_data:  # Persistent storage for RabbitMQ
+  rabbitmq_data:
     driver: local
 
 networks:

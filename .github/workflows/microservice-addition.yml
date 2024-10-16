@@ -32,7 +32,7 @@ jobs:
       - name: Cache Docker layers
         uses: actions/cache@v3
         with:
-          path: /tmp/.buildx-cache
+          path: /tmp/.buildx-cache  # Path for Docker layer cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
@@ -42,39 +42,32 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./addition
-          tags: myregistry/addition:cache
-          load: true
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
+          tags: myregistry/addition:latest  # Tag image locally
+          load: true  # Load the image directly to use it later
+          cache-from: type=local,src=/tmp/.buildx-cache  # Use cached layers
+          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max  # Save updated layers
 
-      - name: Save built image
-        run: docker save myregistry/addition:cache -o addition.tar
-        continue-on-error: true
-    
   test:
     runs-on: ubuntu-latest
     needs: build
-    permissions: 
-      contents: read
-      packages: write
 
     services:
       docker:
         image: docker:20.10.7
         options: --privileged
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
-      - name: Load built image
-        run: docker load -i addition.tar
+
+      - name: Load Docker image from build
+        run: echo "Image already loaded from the previous build step"
 
       - name: Set up Docker Compose for Testing
-        run: docker-compose -f docker-compose.test.yml up messageQueue userService addition
+        run: docker-compose -f docker-compose.test.yml up -d messageQueue userService addition
 
       - name: Run Pytest tests
-        run: pytest /addition/test.py
+        run: pytest /test/addition.test.py
 
       - name: Tear down Docker Compose
         if: always()
@@ -83,10 +76,8 @@ jobs:
   push:
     runs-on: ubuntu-latest
     needs: test
-    permissions:
-      contents: read
-      packages: write
-    
+    if: ${{ github.event_name == 'push' }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -98,13 +89,10 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Load built Docker image
-        run: docker load -i addition.tar
-
       - name: Push Docker image
         uses: docker/build-push-action@v5
         with:
           context: ./addition
-          push: true
+          push: true  # Push only after successful tests
           tags: ghcr.io/${{ github.repository_owner }}/addition:latest
           cache-from: type=local,src=/tmp/.buildx-cache

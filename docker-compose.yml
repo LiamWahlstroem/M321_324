@@ -21,7 +21,7 @@ services:
     container_name: userService
     restart: always
     volumes:
-      - test
+      - /etc/db/userService/db.json:/etc/db/db.json
     depends_on:
       - messageQueue
       - proxy
@@ -29,10 +29,8 @@ services:
     image: ghcr.io/liamwahlstroem/addition:latest
     container_name: addition
     restart: always
-    ports: 
+    ports:
       - 5000:5000
-    volumes:
-      - test
     depends_on:
       - messageQueue
       - proxy
@@ -43,8 +41,6 @@ services:
     restart: always
     ports: 
       - 5000:5000
-    volumes:
-      - test
     depends_on:
       - messageQueue
       - proxy
@@ -55,8 +51,6 @@ services:
     restart: always
     ports: 
       - 5000:5000
-    volumes:
-      - test
     depends_on:
       - messageQueue
       - proxy
@@ -67,8 +61,6 @@ services:
     restart: always
     ports: 
       - 5000:5000
-    volumes:
-      - test
     depends_on:
       - messageQueue
       - proxy
