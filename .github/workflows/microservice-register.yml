@@ -1,8 +1,5 @@
 name: Register Pipeline
 
-env:
-  IMAGE_NAME: register
-
 on:
   push:
     branches:

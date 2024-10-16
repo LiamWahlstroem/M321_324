@@ -1,8 +1,5 @@
 name: Usermanagement Pipeline
 
-env:
-  IMAGE_NAME: usermanagement
-
 on:
   push:
     branches:

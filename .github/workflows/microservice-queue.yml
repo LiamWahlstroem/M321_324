@@ -39,4 +39,4 @@ jobs:
         with:
           context: ./messagequeue
           push: true
-          tags: ghcr.io/liamwahlstroem/${{ env.IMAGE_NAME }}:latest
+          tags: ghcr.io/liamwahlstroem/queue:latest

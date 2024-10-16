@@ -1,8 +1,5 @@
 name: Proxy Pipeline
 
-env:
-  IMAGE_NAME: proxy
-
 on:
   push:
     branches:
@@ -39,4 +36,4 @@ jobs:
         with:
           context: ./proxy
           push: true
-          tags: ghcr.io/liamwahlstroem/${{ env.IMAGE_NAME }}:latest
+          tags: ghcr.io/liamwahlstroem/proxy:latest

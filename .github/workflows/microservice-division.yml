@@ -1,8 +1,5 @@
 name: Division Pipeline
 
-env:
-  IMAGE_NAME: division
-
 on:
   push:
     branches:

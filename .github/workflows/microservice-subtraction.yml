@@ -1,8 +1,5 @@
 name: Subtract Pipeline
 
-env:
-  IMAGE_NAME: subtract
-
 on:
   push:
     branches:

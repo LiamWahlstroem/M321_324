@@ -1,8 +1,5 @@
 name: Login Pipeline
 
-env:
-  IMAGE_NAME: login
-
 on:
   push:
     branches:

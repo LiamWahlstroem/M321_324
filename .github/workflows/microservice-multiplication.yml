@@ -1,8 +1,5 @@
 name: Multiplication Pipeline
 
-env:
-  IMAGE_NAME: multiplication
-
 on:
   push:
     branches:

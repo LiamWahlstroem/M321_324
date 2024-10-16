@@ -1,8 +1,5 @@
 name: Addition Pipeline
 
-env:
-  IMAGE_NAME: addition
-
 on:
   push:
     branches:
