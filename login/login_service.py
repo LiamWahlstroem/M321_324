@@ -33,7 +33,9 @@ async def send_login_request(user: LoginUser):
 async def login_user(user: LoginUser):
     response = await send_login_request(user)
 
-    if response == "User not found" or response == "Invalid password":
-        raise HTTPException(status_code=400, detail="User already exists or wrong password")
+    if response == "User not found":
+        raise HTTPException(status_code=404, detail="User not found")
+    elif response == "Invalid password":
+        raise HTTPException(status_code=400, detail="Invalid password")
 
     return {"message": response}
