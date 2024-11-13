@@ -34,7 +34,6 @@ def verifyJWT(token):
                 return False
             else:
                 return True
-
         else:
             return False
     except InvalidTokenError:
@@ -105,7 +104,7 @@ async def consume():
     await login_queue.consume(handle_login)
     await verify_queue.consume(handle_verification)
 
-    print(' [*] User-Management wartet auf Nachrichten. Zum Beenden CTRL+C drücken')
+    print('[*] User-Management wartet auf Nachrichten. Zum Beenden CTRL+C drücken')
     await asyncio.Future()
 
 if __name__ == "__main__":

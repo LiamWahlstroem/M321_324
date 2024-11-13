@@ -9,22 +9,54 @@ services:
     expose:
       - 80
       - 443
-  messageQueue:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+  queue:
     image: ghcr.io/liamwahlstroem/queue:latest
     container_name: messagequeue
     restart: always
-    ports: 
+    ports:
       - 5672:5672
       - 15672:15672
-  userService:
+  usermanagement:
     image: ghcr.io/liamwahlstroem/user-service:latest
     container_name: userService
     restart: always
     volumes:
       - /etc/db/userService/db.json:/etc/db/db.json
     depends_on:
-      - messageQueue
+      - queue
       - proxy
+  login:
+    image: ghcr.io/liamwahlstroem/login:latest
+    container_name: login
+    restart: always
+    ports:
+      - 5000:5000
+    depends_on:
+      - queue
+      - proxy
+      - usermanagement
+  register:
+    image: ghcr.io/liamwahlstroem/register:latest
+    container_name: register
+    restart: always
+    ports:
+      - 5000:5000
+    depends_on:
+      - queue
+      - proxy
+      - usermanagement
   addition:
     image: ghcr.io/liamwahlstroem/addition:latest
     container_name: addition
@@ -32,36 +64,36 @@ services:
     ports:
       - 5000:5000
     depends_on:
-      - messageQueue
+      - queue
       - proxy
-      - userService
+      - usermanagement
   subtract:
     image: ghcr.io/liamwahlstroem/subtract:latest
     container_name: subtract
     restart: always
-    ports: 
+    ports:
       - 5000:5000
     depends_on:
-      - messageQueue
+      - queue
       - proxy
-      - userService
+      - usermanagement
   division:
     image: ghcr.io/liamwahlstroem/division:latest
     container_name: division
     restart: always
-    ports: 
+    ports:
       - 5000:5000
     depends_on:
-      - messageQueue
+      - queue
       - proxy
-      - userService
+      - usermanagement
   multiplication:
     image: ghcr.io/liamwahlstroem/multiplication:latest
     container_name: multiplication
     restart: always
-    ports: 
+    ports:
       - 5000:5000
     depends_on:
-      - messageQueue
+      - queue
       - proxy
-      - userService
+      - usermanagement
