@@ -1,6 +1,8 @@
 services:
   proxy:
-    image: ghcr.io/liamwahlstroem/proxy:latest
+    build: 
+      - context: ./proxy
+    image: proxy:latest
     container_name: proxy
     restart: always
     ports:
@@ -17,14 +19,19 @@ services:
     command: >
       /bin/sh -c "while :; do sleep 6h && nginx -s reload; done & nginx -g 'daemon off;'"
   messageQueue:
-    image: ghcr.io/liamwahlstroem/queue:latest
+    build: 
+      - context: ./messagequeue
+    image: queue:latest
     container_name: messagequeue
     restart: always
     ports:
       - 5672:5672
       - 15672:15672
   userService:
-    image: ghcr.io/liamwahlstroem/user-service:latest
+    build: 
+      - context: ./usermanagement
+      - dockerfile: Dockerfile
+    image: user-service:latest
     container_name: userService
     restart: always
     volumes:
