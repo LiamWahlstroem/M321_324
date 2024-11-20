@@ -1,5 +1,21 @@
 services:
   proxy:
+    image: ghcr.io/liamwahlstroem/proxy:latest
+    container_name: proxy
+    restart: always
+    ports:
+      - 443:443
+      - 80:80
+    expose:
+      - 80
+      - 443
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    command: >
+      /bin/sh -c "while :; do sleep 6h && nginx -s reload; done & nginx -g 'daemon off;'"
   messageQueue:
     image: ghcr.io/liamwahlstroem/queue:latest
     container_name: messagequeue
