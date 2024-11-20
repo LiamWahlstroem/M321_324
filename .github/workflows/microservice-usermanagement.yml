@@ -67,7 +67,7 @@
             sudo apt-get install docker-compose -y
         
         - name: Install dependencies
-          run: pip install -r /test/requirements.txt
+          run: pip install pytest aio_pika
 
         - name: Set up Docker Compose for Testing
           run: docker-compose -f docker-compose.test.yml up -d messageQueue testUserService
