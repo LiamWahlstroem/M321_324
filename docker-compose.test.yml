@@ -1,7 +1,7 @@
 services:
   proxy:
     build: 
-      - context: ./proxy
+      context: ./proxy
     image: proxy:latest
     container_name: proxy
     restart: always
@@ -20,7 +20,7 @@ services:
       /bin/sh -c "while :; do sleep 6h && nginx -s reload; done & nginx -g 'daemon off;'"
   messageQueue:
     build: 
-      - context: ./messagequeue
+      context: ./messagequeue
     image: queue:latest
     container_name: messagequeue
     restart: always
@@ -29,8 +29,8 @@ services:
       - 15672:15672
   userService:
     build: 
-      - context: ./usermanagement
-      - dockerfile: Dockerfile
+      context: ./usermanagement
+      dockerfile: Dockerfile
     image: user-service:latest
     container_name: userService
     restart: always
