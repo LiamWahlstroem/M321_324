@@ -34,11 +34,10 @@ services:
   testUserService:
     build:
       context: ./usermanagement
+      dockerfile: DockerfileTest
     image: user-service:latest
     container_name: userService
     restart: always
-    volumes:
-      - /test/testdata.json:/etc/db/db.json
     depends_on:
       - messageQueue
   login:
