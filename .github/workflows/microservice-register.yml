@@ -11,6 +11,7 @@ on:
       - main
     paths:
       - 'register/**'
+  workflow_dispatch:
 
 jobs:
   build:

@@ -11,6 +11,7 @@
         - main
       paths:
         - 'usermanagement/**'
+    workflow_dispatch:
 
   jobs:
     build:
