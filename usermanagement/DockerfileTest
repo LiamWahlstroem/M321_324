@@ -8,7 +8,7 @@ WORKDIR /app
 
 COPY . .
 
-COPY ../test/testdata.json /etc/db/db.json
+COPY ./testdata.json /etc/db/db.json
 
 RUN pip install --no-cache-dir -r requirements.txt
 
