@@ -11,7 +11,7 @@ on:
       - main
     paths:
       - 'addition/**'
-  workflow_dispatch:
+  workflow_dispatch: # Ensures the manual trigger is enabled
 
 jobs:
   build:
@@ -64,10 +64,6 @@ jobs:
 
       - name: Debug: Verify test directory and file
         run: ls -l test/
-
-      - name: Create required directories in userService container
-        run: mkdir -p /etc/db
-        shell: bash
 
       - name: Install Docker Compose
         run: |
