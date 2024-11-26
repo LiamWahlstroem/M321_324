@@ -58,16 +58,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Verify test data file
+        run: |
+          if [ ! -f test/testdata.json ]; then
+            echo "ERROR: test/testdata.json does not exist or is not a file"
+            exit 1
+          fi
+
       - name: Install Docker Compose
         run: |
           sudo apt-get update
           sudo apt-get install docker-compose -y
 
-      - name: Install dependencies
-        run: pip install pytest
+      - name: Debug Docker Compose configuration
+        run: docker-compose -f docker-compose.test.yml config
 
       - name: Set up Docker Compose for Testing
         run: docker-compose -f docker-compose.test.yml up -d messageQueue userService addition
+
+      - name: Debug mounted directories
+        run: docker-compose -f docker-compose.test.yml exec userService ls -l /etc/db
 
       - name: Run Pytest tests
         run: pytest /test/addition.test.py
