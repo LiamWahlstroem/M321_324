@@ -65,6 +65,9 @@ jobs:
             exit 1
           fi
 
+      - name: List test directory
+        run: ls -l test/
+
       - name: Install Docker Compose
         run: |
           sudo apt-get update
