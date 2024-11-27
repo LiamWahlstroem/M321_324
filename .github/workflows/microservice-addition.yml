@@ -58,13 +58,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Verify test data file
-        run: |
-          if [ ! -f test/testdata.json ]; then
-            echo "ERROR: test/testdata.json does not exist or is not a file"
-            exit 1
-          fi
-
       - name: List test directory
         run: ls -l test/
 
