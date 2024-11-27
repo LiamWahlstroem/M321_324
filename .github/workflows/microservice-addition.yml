@@ -67,7 +67,7 @@ jobs:
         run: pip install pytest requests pyJWT
 
       - name: Set up Docker Compose for Testing
-        run: docker-compose -f docker-compose.test.yml up -d messageQueue userService additio
+        run: docker-compose -f docker-compose.test.yml up -d messageQueue userService addition
 
       - name: Wait for services
         run: sleep 30
