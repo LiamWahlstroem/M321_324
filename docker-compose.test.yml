@@ -35,7 +35,7 @@ services:
     container_name: userService
     restart: always
     volumes:
-      - /test/testdata.json:/etc/db/db.json
+      - ./usermanagement/testdata.json:/etc/db/db.json
     depends_on:
       - messageQueue
   testUserService:
