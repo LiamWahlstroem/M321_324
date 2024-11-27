@@ -11,7 +11,7 @@ def createJWT(username):
     
     return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
-BASE_URL = "http://localhost:8003"  # Updated to match the host port mapping
+BASE_URL = "http://localhost:5000"  # Updated to match the host port mapping
 
 def test_valid_jwt_and_valid_numbers_add():
     # Test case 1: Valid JWT and valid numbers
